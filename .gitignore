@@ -1,0 +1,30 @@
+.tmp
+.DS_Store
+
+# emacs artifacts
+*~
+*#
+
+# vim artifacts
+*.swp
+
+# intellij artifacts
+.idea/
+*.iml
+
+# python artifacts
+*.pyc
+.Python
+pip-selfcheck.json
+__pycache__/
+# If case someone puts a virtualenv here, ignore it.
+/bin/
+/include/
+/lib/
+
+# Google API artifacts
+client_secrets.json
+driveFiles.credentials
+
+# npm artifacts
+npm-debug.log.*

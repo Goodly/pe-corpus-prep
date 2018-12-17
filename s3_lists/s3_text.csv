@@ -1,0 +1,3 @@
+s3_bucket,s3_path
+s3://tagworks.thusly.co/CUSTOMER/corpus/,Seattle/26239-Seattle-SeattleTimes/text.txt.gz
+s3://tagworks.thusly.co/CUSTOMER/corpus/,Seattle/26247-Seattle-SeattleTimes/text.txt.gz
