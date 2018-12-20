@@ -19,7 +19,7 @@ import requests
 
 params = (
     ('properties',
-     '{"annotators":"tokenize,ssplit,pos,lemma,ner","outputFormat":"json"}'),
+     '{"annotators":"tokenize,ssplit,pos,lemma,ner,parse,depparse,dccoref","outputFormat":"json"}'),
 )
 
 
