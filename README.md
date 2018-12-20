@@ -66,5 +66,7 @@ The `annotations.json.gz` format is only relevant if you already have annotation
 This workflow is summarized in the script `run_all.sh`. For further information on the content of each of the scripts, refer to the relevant sections of the repository. 
 
 Finally, an important warning related to encoding/decoding in Python: 
-- One potential gotcha is that editing documents on Windows may introduce a byte-order-mark, and other platforms may remove this byte-order-mark.
-- Microsoft tools sometimes add a byte-order-mark (BOM) signature as the first character of utf-8 encoded files. The Python decode/encode routines have a `'-sig'` version that strips/adds this BOM from the file. Stripping the BOM is a good idea when initially preparing/writing a corpus. However, if we are just reading the text, leave the sig alone so the SHA-256 computation will match any prior SHA-256 that was calculated with the BOM. Please refer to the `bom_sig` folder for more information on this issue.
+
+One potential gotcha is that editing documents on Windows may introduce a byte-order-mark, and other platforms may remove this byte-order-mark.
+
+Microsoft tools sometimes add a byte-order-mark (BOM) signature as the first character of utf-8 encoded files. The Python decode/encode routines have a `'-sig'` version that strips/adds this BOM from the file. Stripping the BOM is a good idea when initially preparing/writing a corpus. However, if we are just reading the text, leave the sig alone so the SHA-256 computation will match any prior SHA-256 that was calculated with the BOM. Please refer to the `bom_sig` folder for more information on this issue.
