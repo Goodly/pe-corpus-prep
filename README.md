@@ -11,13 +11,19 @@ An example:
 ```
 {
   "filename": "26239Seattle-SeattleTimes-02-999.txt",
-  "file_sha256": "3b3f5dbe18afe9a79ec8b25722221c6658387da13c28824653f9a278725d7999"
+  "file_sha256": "3b3f5dbe18afe9a79ec8b25722221c6658387da13c28824653f9a278725d7999",
+  "extra": {
+  }
 }
 ```
+
+You should put any custom metadata for your project under the "extra" key.
 
 Since TagWorks stores all annotations separately as character offsets, Tagworks matches all annotations and metadata with their source documents by looking up documents using their SHA-256 fingerprint. SHA-256 is a standardized algorithm that provides a unique document fingerprint, so any single character change, addition, or removal will change the SHA-256 of that document.
 
 Thus it is very important that once annotations are generated externally, such as by the processes outlined below for adding hints, that each source text document remain identical and not mutate.
+
+Tip: You can use `zcat text.txt.gz | openssl sha256` to quickly calculate the SHA-256 of a document at the command line.
 
 The `annotations.json.gz` format is only relevant if you already have annotations from a prior process that you wish to load into Tagworks for further processing.
 
