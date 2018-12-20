@@ -1,15 +1,5 @@
 import os
 import argparse
-from fnmatch import fnmatch
-import json
-import gzip
-import codecs
-from io import StringIO
-from collections import defaultdict
-import hashlib
-
-import logging
-from logging import StreamHandler
 
 from file_utilities import compute_sha256, read_gzipped_metadata, read_gzipped_document
 from ner_to_hints import ner_to_hints
