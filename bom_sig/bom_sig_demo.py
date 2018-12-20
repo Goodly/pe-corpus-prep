@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import gzip
 
-from sha256 import compute_sha256
+from file_utilities import compute_sha256
 
 # Microsoft tools sometimes add a byte-order-mark (BOM) signature as the first
 # character of utf-8 encoded files.
