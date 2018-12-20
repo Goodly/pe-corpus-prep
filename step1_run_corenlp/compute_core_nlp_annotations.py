@@ -35,7 +35,7 @@ if __name__ == '__main__':
         path_to_documents = args.dirname
 
     for root, dirs, files in os.walk(path_to_documents):
-        if not dirs:
+        if not dirs and "text.txt.gz" in files:
             zipped = os.path.join(root, "text.txt.gz")
             with gzip.open(zipped, mode='rt', encoding='utf8') as unzipped:
                 data = unzipped.read().encode('utf-8')
@@ -47,22 +47,3 @@ if __name__ == '__main__':
                     json.dump(response.json(), f_out)
             else:
                 print("Uh oh, got code {} when annotating {}".format(response.status_code, zipped))
-
-    # OLD CODE
-    if False:
-        for f in sorted(os.listdir(path_to_documents)):
-            if f != ".DS_Store":
-                for sf in sorted(os.listdir(os.path.join(path_to_documents, f))):
-                    if sf != ".DS_Store":
-                        zipped = os.path.join(path_to_documents, f, sf, "text.txt.gz")
-                        with gzip.open(zipped, mode='rt', encoding='utf8') as unzipped:
-                            data = unzipped.read().encode('utf-8')
-                        response = requests.post('http://localhost:9000/', params = params, data = data)
-                        if response.status_code == 200:
-                            with gzip.open(os.path.join(path_to_documents, f, sf, "core-nlp.json.gz"),
-                                           mode='wt',
-                                           encoding="utf-8") as f_out:
-                                json.dump(response.json(), f_out)
-                        else:
-                            print("Uh oh, got code {} when annotating {}".format(response.status_code, zipped))
-    # OLD CODE

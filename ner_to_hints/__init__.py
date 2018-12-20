@@ -72,12 +72,14 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.dirname:
         dirname = args.dirname
-        text_filename = os.path.join(dirname, "text.txt.gz")
-        core_filename = os.path.join(dirname, "core-nlp.json.gz")
-        meta_filename = os.path.join(dirname, "metadata.json.gz")
-        hints_filename = os.path.join(dirname, "hints.json.gz")
-        full_text = read_gzipped_document(text_filename)
-        metadata = read_gzipped_metadata(meta_filename)
-        sha256 = compute_sha256(full_text)
-        assert(sha256 == metadata['file_sha256'])
-        ner_to_hints(core_filename, hints_filename, full_text, sha256, metadata)
+        for root, dirs, files in os.walk(dirname):
+            if "text.txt.gz" in files and "core-nlp.json.gz" in files and "metadata.json.gz" in files:
+                text_filename = os.path.join(dirname, "text.txt.gz")
+                core_filename = os.path.join(dirname, "core-nlp.json.gz")
+                meta_filename = os.path.join(dirname, "metadata.json.gz")
+                hints_filename = os.path.join(dirname, "hints.json.gz")
+                full_text = read_gzipped_document(text_filename)
+                metadata = read_gzipped_metadata(meta_filename)
+                sha256 = compute_sha256(full_text)
+                assert(sha256 == metadata['file_sha256'])
+                ner_to_hints(core_filename, hints_filename, full_text, sha256, metadata)

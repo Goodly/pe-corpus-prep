@@ -12,30 +12,20 @@ def read_gzipped_folders(path):
     folders = sorted(folders)
     return folders
 
-# OLD CODE
-if False:
-    def read_gzipped_folders(path):
-        folders = []
-        for f in sorted(os.listdir(path)):
-            if f != ".DS_Store":
-                for sf in sorted(os.listdir(os.path.join(path, f))):
-                    if sf != ".DS_Store":
-                        folders += [os.path.join(path, f, sf)]
-        return folders
-# OLD CODE
-
 def add_hints_files(folders):
     for f in folders:
-        text_filename = os.path.join(f, "text.txt.gz")
-        core_filename = os.path.join(f, "core-nlp.json.gz")
-        meta_filename = os.path.join(f, "metadata.json.gz")
-        hints_filename = os.path.join(f, "hints.json.gz")
-        full_text = read_gzipped_document(text_filename)
-        metadata = read_gzipped_metadata(meta_filename)
-        sha256 = compute_sha256(full_text)
-        if (sha256 != metadata['file_sha256']):
-            print("SHA256 for '{}' does not match metadata SHA256!".format(f))
-        ner_to_hints(core_filename, hints_filename, full_text, sha256, metadata)
+        for root, dirs, files in os.walk(f):
+            if "text.txt.gz" in files and "core-nlp.json.gz" in files and "metadata.json.gz" in files:
+                text_filename = os.path.join(f, "text.txt.gz")
+                core_filename = os.path.join(f, "core-nlp.json.gz")
+                meta_filename = os.path.join(f, "metadata.json.gz")
+                hints_filename = os.path.join(f, "hints.json.gz")
+                full_text = read_gzipped_document(text_filename)
+                metadata = read_gzipped_metadata(meta_filename)
+                sha256 = compute_sha256(full_text)
+                if (sha256 != metadata['file_sha256']):
+                    print("SHA256 for '{}' does not match metadata SHA256!".format(f))
+                ner_to_hints(core_filename, hints_filename, full_text, sha256, metadata)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
