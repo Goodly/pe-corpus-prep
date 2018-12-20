@@ -7,7 +7,7 @@ Start the CoreNLP server, for example:
 docker run -it -p 9000:9000 vzhong/corenlp-server bash
 
 # If you have less than 4GB of free memory, you don't need all the parsers, you can leave off
-    parse, depparse, dccoref
+    parse, depparse, dcoref
 in the params below.
 java -Xmx16g -cp "./src/*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer \
 -port 9000 -timeout 150000
