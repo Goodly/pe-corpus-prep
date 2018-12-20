@@ -42,10 +42,10 @@ if __name__ == '__main__':
         '-d', '--dirname',
         help='dir with corpus with text.txt.gz, core-nlp.json.gz, and metadata.json.gz')
     args = parser.parse_args()
+
+    path_to_documents = "sample_documents/"
     if args.dirname:
-        folders = read_gzipped_folders(args.dirname)
-        add_hints_files(folders)
-    else:
-        path_to_data = "sample_documents/"
-        folders = read_gzipped_folders(path_to_data)
-        add_hints_files(folders)
+        path_to_documents = "sample_documents/"
+
+    folders = read_gzipped_folders(path_to_documents)
+    add_hints_files(folders)
