@@ -6,12 +6,23 @@ from ner_to_hints import ner_to_hints
 
 def read_gzipped_folders(path):
     folders = []
-    for f in sorted(os.listdir(path)):
-        if f != ".DS_Store":
-            for sf in sorted(os.listdir(os.path.join(path, f))):
-                if sf != ".DS_Store":
-                    folders += [os.path.join(path, f, sf)]
+    for root, dirs, files in os.walk(path):
+        if not dirs:
+            folders.append(root)
+    folders = sorted(folders)
     return folders
+
+# OLD CODE
+if False:
+    def read_gzipped_folders(path):
+        folders = []
+        for f in sorted(os.listdir(path)):
+            if f != ".DS_Store":
+                for sf in sorted(os.listdir(os.path.join(path, f))):
+                    if sf != ".DS_Store":
+                        folders += [os.path.join(path, f, sf)]
+        return folders
+# OLD CODE
 
 def add_hints_files(folders):
     for f in folders:
@@ -33,9 +44,9 @@ if __name__ == '__main__':
         help='dir with corpus with text.txt.gz, core-nlp.json.gz, and metadata.json.gz')
     args = parser.parse_args()
 
-    path_to_documents = "sample_documents/"
+    path_to_documents = "sample_documents"
     if args.dirname:
-        path_to_documents = "sample_documents/"
+        path_to_documents = "sample_documents"
 
     folders = read_gzipped_folders(path_to_documents)
     add_hints_files(folders)
