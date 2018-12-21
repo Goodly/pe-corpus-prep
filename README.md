@@ -19,26 +19,34 @@ An example:
 
 You should put any custom metadata for your project under the "extra" key.
 
-Since TagWorks stores all annotations separately as character offsets, Tagworks matches all annotations and metadata with their source documents by looking up documents using their SHA-256 fingerprint. SHA-256 is a standardized algorithm that provides a unique document fingerprint, so any single character change, addition, or removal will change the SHA-256 of that document.
+Since TagWorks stores all annotations separately as character offsets, TagWorks matches all annotations and metadata with their source documents by looking up documents using their SHA-256 fingerprint. SHA-256 is a standardized algorithm that provides a unique document fingerprint, so any single character change, addition, or removal will change the SHA-256 of that document.
 
 Thus it is very important that once annotations are generated externally, such as by the processes outlined below for adding hints, that each source text document remain identical and not mutate.
 
 Tip: You can use `zcat text.txt.gz | openssl sha256` to quickly calculate the SHA-256 of a document at the command line.
 
-The `annotations.json.gz` format is only relevant if you already have annotations from a prior process that you wish to load into Tagworks for further processing.
+The `annotations.json.gz` format is only relevant if you already have annotations from a prior process that you wish to load into TagWorks for further processing.
 
 **What do the various steps in the TagWorks-prep repo accomplish?**
+
+Step 1 and Step 2 are optional, but may be used if your schema would benefit from showing some words and phrases in italics, as hints. Step 1 and 2 make hints for people, places, and time expressions. These hints can be activated on a per question basis in the Data Hunt.
+
+TagWorks loads a prepared corpus from Amazon Web Services S3 storage. All files are stored individually gzipped, so that TagWorks may retrieve any random set of the corpus as needed during a machine learning training and testing phase. Step 3 shows a one line command for gzipping any files that still need to be gzipped.
+
+To create tasks for documents in TagWorks, the relevant subset must be loaded from S3 into the TagWorks database. You provide TagWorks with a two-column CSV file to tell it what files to load from S3 into the database. Step 4 provides an example of how to generate this file by iterating over a directory structure.
+
+Step 5 shows the single AWS CLI command needed to upload the corpus to S3. Thusly will provide you with AWS credentials that can be used to upload your corpus to Thusly's S3 storage.
 
 *Step 1: Run CoreNLP*
 
 - Step 1a. Run `export PYTHONPATH="."` in the terminal.
 	- The current directory has to be on the path because the modules `file_utilities` and `ner_to_hints` are imported later in the pipeline. 
 - Step 1b. Start the Stanford CoreNLP server. This can be achieved by doing the following:
-	- If you have Docker already installed, you may find it simpler to run an [existing container](https://stanfordnlp.github.io/CoreNLP/other-languages.html): `$ docker run -it -p 9000:9000 vzhong/corenlp-server bash`
+	- If you have Docker already installed, you may find it simpler to run an [existing container](https://stanfordnlp.github.io/CoreNLP/other-languages.html#docker): `$ docker run -it -p 9000:9000 vzhong/corenlp-server bash`
 		- Note at the time of this writing, this container runs an older version of CoreNLP and has not been updated. The source for this container is at [vzhong/corenlp-docker](https://github.com/vzhong/corenlp-docker).
 	- Then run this inside the container, or directly at your command line if you have installed Java and CoreNLP on the machine you are using: `$ java -Xmx16g -cp "./src/*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 150000`
 		- See also the documentation for the [Stanford CoreNLP webserver](https://stanfordnlp.github.io/CoreNLP/corenlp-server.html) parameters.
-	- If you get error 500, you probably ran out of memory. In particular, if you have less than 4GB of free memory, you don't need all the parsers, you can leave off `parse`, `depparse`, `dccoref` in the `params` object included in the script described in Step 1c.
+	- If you get error 500, you probably ran out of memory. In particular, if you have less than 4GB of free memory, you don't need all the parsers, you can leave off `parse`, `depparse`, `dcoref` in the `params` object included in the script described in Step 1c.
 - Step 1c. Run `compute_core_nlp_annotations.py` from the terminal: `$ python3 step1_run_corenlp/compute_core_nlp_annotations.py`
 	- This script runs a program that processes all of the documents in the `sample_documents` folder using the inputted CoreNLP annotators and produces a `core-nlp.json.gz` file in the same subfolder where `text.txt.gz` resides, or returns an error message if the annotation process for a given article fails. 
 	- The script allows the user to specify a custom documents folder (other than the one hardcoded in the script) using the `-d` or `--dirname` flags when running the script. 
