@@ -17,7 +17,7 @@
 .Python
 pip-selfcheck.json
 __pycache__/
-# If case someone puts a virtualenv here, ignore it.
+# In case someone puts a virtualenv here, ignore it.
 /bin/
 /include/
 /lib/
